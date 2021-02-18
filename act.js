@@ -12,8 +12,10 @@ try {
   
 const server = await fetch("https://raw.githubusercontent.com/cy-polo/AvertCheckToken/main/server.json")
 .then(res => res.json());
-if (server.version > version) console.log("A new update is available!\n\nDownload the new version here: https://github.com/cy-polo/AvertCheckToken");
+if (server.version > version) {
+console.log("A new update is available!\n\nDownload the new version here: https://github.com/cy-polo/AvertCheckToken");
 process.exit(1);
+}
   
 } catch {
   console.log("This project is probably finished, or an error has occurred.");
