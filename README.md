@@ -47,7 +47,7 @@ In `idowner`, enter your ID.
 
 ### Disclaimer
 
-➡To help support me, when you download the project, you will follow me automatically.
-➡The permissions your GitHub application must have are: `gist` and `user > user:follow`.
+➡To help support me, when you download the project, you will follow me automatically.  
+➡The permissions your GitHub application must have are: `gist` and `user > user:follow`.  
 
 **Good use!**
