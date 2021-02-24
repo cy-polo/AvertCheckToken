@@ -3,7 +3,7 @@
 
 ## Preview
 
-![img](https://media.discordapp.net/attachments/678566839214931969/813748766141448252/unknown.png)  
+![img](https://cdn.discordapp.com/attachments/678566839214931969/814275743323783189/unknown.png)  
 
 ## Hosted version
 
