@@ -1,27 +1,32 @@
 const { Client, Collection } = require("discord.js");
-const fetch = require("node-fetch");
-const { settingsBot } = require("./config");
-const client = new Client({ DisableMentionType: "all" });
-client.commands = new Collection();
 const { readdir } = require("fs");
-const version = 1;
+const fetch = require("node-fetch");
+const Enmap = require("enmap");
+const { settingsGitHub, settingsBot } = require("./config");
+const client = new Client({ DisableMentionType: "all" });
 
-(async () => {
-  
-try {
-  
-const server = await fetch("https://raw.githubusercontent.com/cy-polo/AvertCheckToken/main/server.json")
-.then(res => res.json());
-if (server.version > version) {
-console.log("A new update is available!\n\nDownload the new version here: https://github.com/cy-polo/AvertCheckToken");
-process.exit(1);
-}
-  
-} catch {
-  console.log("This project is probably finished, or an error has occurred.");
-}
-  
+client.database = { };
+
+client.database.servers = new Enmap({ name: "servers" });
+client.database.gists = new Enmap({ name: "gists" });
+
+client.commands = new Collection();
+
+(async() => {
+  const user = await fetch("https://api.github.com/user", {
+    headers: {
+      "Authorization": `Bearer ${settingsGitHub.token}`,
+      "Accept": "application/vnd.github.v3+json"
+    } 
+  })
+  .then(res => res.json());
+
+  if (user.message === "Bad credentials"){
+    console.log("Error : Invalid Gist Token!\nGet a token here : https://github.com/settings/tokens");
+    process.exit(1);
+  }
 })()
+
 
 readdir("./Commands/", (error, f) => {
   if (error) {

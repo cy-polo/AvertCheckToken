@@ -1,43 +1,34 @@
 const { MessageEmbed } = require("discord.js");
-const fetch = require("node-fetch");
-const { settingsEmbed, settingsEmojis, settingsGitHub } = require("../config");
+const moment = require("moment");
+const { settingsEmbed, settingsEmojis } = require("../config");
 
-module.exports.run = async(client, message, args) => {
+exports.run = async(client, message, args) => {
 
 const code = args.join(" ");
-if (!args) return message.channel.send(settingsEmojis.uncheck + " Please specify the Gist ID.");
+if (!code) return message.channel.send(settingsEmojis.uncheck + " Please specify the Gist ID.");
 
-try {    
-    
-const response = await fetch(`https://api.github.com/gists/${code}`, {
-    method: "GET",
-    headers: {
-    "Authorization": `Bearer ${settingsGitHub.token}`,
-    "Accept": "application/vnd.github.v3+json"
-}})
-.then(res => res.json());
+const database = client.database.gists;
+let infoGist = database.get(code);
 
-if (response.message === "Not Found") return message.channel.send(settingsEmojis.check + " Error : Invalid ID Gist.");
-if (response.owner.html_url !== settingsGitHub.page) return message.channel.send("<:unchecked:765661976361304084> Erreur : Ce Gist ne provient pas du GitHub : https://github.com/cy-polo.");
+if (!infoGist) return message.channel.send(settingsEmojis.uncheck + " Invalid ID Gist.");
 
 const getEmbed = new MessageEmbed()
 
 .setAuthor(client.user.username, client.user.displayAvatarURL())
+.setThumbnail(infoGist.bot.avatar)
 .setColor(settingsEmbed.color)
 .addFields(
-  { name: "Informations", value: `ID : ${response.id}\nURL : ${response.html_url}\nPublié le : ${response.created_at}` },
-  { name: "Content", value: `\`\`\`md\n${response.files["README.md"].content}\n\`\`\`` }
+  { name: "Gist", value: `\`🆔 ID\` **»** ${infoGist.gist.id}\n\`🔗 URL\` **»** [Click here](${infoGist.gist.url})\n\`📅 Published on\` **»** ${moment(infoGist.gist.date).format("LLLL")}` },
+  { name: "Author", value: `\`🧑 Username\` **»** ${infoGist.author.username}\n\`🆔 ID\` **»** ${infoGist.author.id}` },
+  { name: "Server", value: `\`📙 Name\` **»** ${infoGist.server.name}\n\`🆔 ID\` **»** ${infoGist.server.id}` },
+  { name: (infoGist.bot.bot ? bot = "Bot" : bot = "User"), value: `\`🧑 Username\` **»** ${infoGist.bot.username}\n\`🆔 ID\` **»** ${infoGist.bot.id}` },
+  { name: "About", value: `\`🤖 Info\` **»** ${client.user.username} is an open-source bot.\n\`➕ Invite the official bot\` **»** [Click here](https://discord.com/oauth2/authorize?client_id=790262272291242045&scope=bot&permissions=8)\n\`🌐 GitHub\` **»** [Click here](https://github.com/cy-polo/AvertCheckToken)` }
 )
 .setFooter(settingsEmbed.footer, settingsEmbed.image);
 
 message.channel.send(getEmbed);
-    
-} catch {
-    message.channel.send(settingsEmojis.uncheck + " An error has occurred!");
-}
-
 };
 
-module.exports.help = {
-    name: "get"
+exports.help = {
+  name: "get"
 };

@@ -1,14 +1,19 @@
 const fetch = require("node-fetch");
-const { settingsOwner, settingsEmojis, settingsGitHub } = require("../config");
+const { settingsEmojis, settingsGitHub } = require("../config");
 
-module.exports.run = async(client, message, args) => {
-
-if(!settingsOwner.idowner.some(perm => message.author.id.includes(perm))) return message.channel.send(settingsEmojis.uncheck + " Only the bot creator can execute the command!");
-
-try {
+exports.run = async(client, message, args) => {
 
 const code = args.join(" ");
-if (!args) return message.channel.send(settingsEmojis.uncheck + " Please specify the Gist ID.");
+if (!code) return message.channel.send(settingsEmojis.uncheck + " Please specify the Gist ID.");
+
+const database = client.database.gists;
+const infoGist = database.get(code);
+
+if (!infoGist) return message.channel.send(settingsEmojis.uncheck + " Invalid ID Gist.");
+
+if (infoGist.author.id !== message.author.id) return message.channel.send(settingsEmojis.uncheck + " You are not the person who published the Gist!");
+
+try {
 
 await fetch(`https://api.github.com/gists/${code}`, {
     method: "DELETE",
@@ -18,14 +23,15 @@ await fetch(`https://api.github.com/gists/${code}`, {
 }})
 .then(res => res.json());
 
-message.channel.send(settingsEmojis.check + " Error : Invalid ID Gist.");
+message.channel.send(settingsEmojis.uncheck + " Error : Invalid ID Gist.");
 
 } catch {
 
-message.channel.send(settingsEmojis.uncheck + " The Gist has been deleted.");
+message.channel.send(settingsEmojis.check + " The Gist has been deleted.");
+database.delete(code);
 };
 };
 
-module.exports.help = {
+exports.help = {
     name: "delete"
 };

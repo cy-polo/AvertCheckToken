@@ -1,11 +1,10 @@
 {
     "settingsBot": {
-        "token": "TOKEN BOT HERE",
-        "prefix": "act!"
+        "token": "YOUR BOT TOKEN HERE",
+        "defaultPrefix": "act!"
     },
     "settingsGitHub": {
-        "token": "TOKEN GITHUB HERE",
-        "page": "YOUR PROFILE GITHUB HERE"
+        "token": "YOUR GITHUB TOKEN HERE"
     },
     "settingsEmbed": {
         "color": "#5A79A9",
@@ -13,10 +12,7 @@
         "image": "https://cdn.discordapp.com/avatars/542749823372361745/a_f186e8654afb481e3e82a8bae74ccfad.gif?size=1024"
     },
     "settingsEmojis": {
-        "ckeck": ":white_check_mark:",
-        "unckeck": ":x:"
-    },
-    "settingsOwner": {
-        "idowner": ["ID OWNER HERE"]
+        "check": ":white_check_mark:",
+        "uncheck": ":x:"
     }
 }

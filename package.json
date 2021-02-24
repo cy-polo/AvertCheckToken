@@ -7,10 +7,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node avt.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cy-polo/AvertCheckToken.git"
+  },
   "author": "Polo",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.5.1",
+    "enmap": "^5.8.4",
     "moment": "^2.29.1",
     "node-fetch": "^2.6.1",
     "util": "^0.12.3"
