@@ -1,6 +1,6 @@
 {
   "name": "avertchecktoken",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "An open-source Discord bot that protects tokens from bots sent in the chat!",
   "main": "avt.js",
   "scripts": {
